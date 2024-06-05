@@ -101,6 +101,25 @@ const styles = StyleSheet.create({
 
 1. display의 flex만 사용 가능
 
-- 이미 View가 flex-container이기에 바로 flexDirection 사용 가능
+- 이미 View가 flex-container이기에 바로 flexDirection 사용 가능.
 - 부모의 flex 값을 기준으로 자식의 flex 값을 계산함.
 - 부모의 flex 값이 없으면 화면에 렌더링 되지 않음.
+
+### 2.6강
+
+1. 기본 스크롤을 사용할 수 없기 때문에 native에는 ScrollView가 있음.
+
+- `pagingEnabled` : 페이지 처럼 보여주기.
+- `horizontal` : 가로로 스크롤하기.
+- `showsHorizontalScrollIndicator={false}` : 가로 스크롤바 안 보이게 하기.
+- `contentContainerStyle` : content 스타일링.
+- `indicatorStyle="white"` : ios만 스크롤바 색상 변경.
+- `persistentScrollbar={true}` : 안드로이드만 스크롤바가 투명해지지 않게 함.
+
+2. Dimensions으로 핸드폰의 크기를 알 수 있음.
+
+```
+import { Dimensions } from "react-native";
+
+const { width: SCREEN_WIDTH } = Dimensions.get("window");
+```
