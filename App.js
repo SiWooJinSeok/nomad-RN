@@ -15,7 +15,8 @@ const { width: SCREEN_WIDTH } = Dimensions.get("window");
 const API_KEY = "a506b84cfc1527beb32cfbccb67ea40b";
 
 export default function App() {
-  const [street, setStreet] = useState("Loading...");
+  const [city, setCity] = useState("Loading...");
+  const [street, setStreet] = useState("");
   const [days, setDays] = useState([]);
   const [ok, setOk] = useState(true);
 
@@ -35,13 +36,18 @@ export default function App() {
       { useGoogleMaps: false }
     );
     setStreet(locations[0].street);
+    setCity(locations[0].region + " " + locations[0].district);
 
-    const res = await fetch(
-      `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=metric`
-    );
+    try {
+      const res = await fetch(
+        `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=metric`
+      );
 
-    const data = await res.json();
-    setDays(data.list);
+      const data = await res.json();
+      setDays(data.list);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   useEffect(() => {
@@ -50,6 +56,7 @@ export default function App() {
   return (
     <View style={styles.container}>
       <View style={styles.city}>
+        <Text style={styles.cityname}>{city}</Text>
         <Text style={styles.cityname}>{street}</Text>
       </View>
       <ScrollView
@@ -71,6 +78,7 @@ export default function App() {
         ) : (
           days.map((day, index) => (
             <View key={index} style={styles.day}>
+              <Text style={styles.time}>{day.dt_txt.slice(5, 13) + "시"}</Text>
               <Text style={styles.temp}>
                 {parseFloat(day.main.temp).toFixed(1)}
               </Text>
@@ -89,7 +97,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "tomato",
+    backgroundColor: "skyblue",
   },
   city: {
     flex: 1.2,
@@ -97,24 +105,32 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   cityname: {
-    fontSize: 58,
+    fontSize: 50,
     fontWeight: "500",
+    color: "#fff",
   },
   weather: {},
   day: {
     width: SCREEN_WIDTH,
     alignItems: "center",
+    color: "#fff",
   },
   temp: {
     marginTop: 50,
     fontSize: 150,
+    color: "#fff",
   },
   description: {
     marginTop: -30,
     fontSize: 60,
+    color: "#fff",
   },
   tinyText: {
     fontSize: 20,
-    marginTop: -10,
+    color: "#fff",
+  },
+  time: {
+    fontSize: 60,
+    color: "#fff",
   },
 });
