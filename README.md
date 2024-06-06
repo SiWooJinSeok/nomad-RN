@@ -292,3 +292,27 @@ const data = await res.json();
 ```
 
 - day.temp.day가 아니라 day.main.temp로 해결!
+
+### 2.10강
+
+1. Fontisto 사용하기
+
+- 많은 아이콘을 밑에서 홈페이지에서 찾아서 사용할 수 있다. (엄청 많다.)
+  - https://icons.expo.fyi
+
+2. 임포트 하기
+
+```
+import { Fontisto } from "@expo/vector-icons";
+```
+
+3. 사용하기
+
+```
+<Fontisto
+    style={{ marginLeft: 20, marginRight: 20, marginTop: 20 }}
+    name={icons[day.weather[0].main]}
+    size={70}
+    color="white"
+/>
+```
