@@ -316,3 +316,95 @@ import { Fontisto } from "@expo/vector-icons";
     color="white"
 />
 ```
+
+## 4일 차
+
+### 3.1강
+
+1. TouchableOpacity 사용해보기
+
+- 클릭시 Opacity 활성화해서 애니메이션처럼 투명해지게 만듦
+
+- 사용하기
+
+```
+import { TouchableOpacity } from "react-native";
+
+// ...
+
+<TouchableOpacity>
+// ...
+</TouchableOpacity>
+
+```
+
+- activeOpacity 투명도를 정할 수 있는 옵션
+
+2. TouchableHighlight 사용해보기
+
+- 옵션 없이 사용 시 아무동작도 하지 않음
+
+- 사용하기
+
+```
+import { TouchableHighlight } from "react-native";
+
+// ...
+
+<TouchableHighlight>
+// ...
+</TouchableHighlight>
+```
+
+- onPress 옵션
+
+  - 눌렀을 때 동작하게 하는 함수
+  - 사용하지 않으면 눌러도 반응이 없음!
+
+- underlayColor 옵션
+
+  - 눌렸을 때 버튼의 배경색을 바꿔주는 옵션
+
+- 그렇게 많이 사용하진 않는다고 함
+
+3. TouchableWithoutFeedback 사용해보기
+
+- 위 2개 컴포넌트와 달리 UI로 표현은 되지 않고 onPress를 이용해서 이벤트를 관리 할 수 있음
+- 유저에게 보여주지 않을 때 사용
+
+- 사용하기
+
+```
+import { TouchableWithoutFeedback } from "react-native";
+
+// ...
+
+<TouchableWithoutFeedback>
+// ...
+</TouchableWithoutFeedback>
+```
+
+4. Pressable 사용해보기
+
+- 더 많은 속성들을 제공해주는 컴포넌트로 섬세하게 작업할 수 있다.
+
+- 사용하기
+
+```
+import { Pressable } from "react-native";
+
+// ...
+
+<Pressable>
+// ...
+</Pressable>
+
+```
+
+- delayLongPress : 얼마나 길게 누르면 반응할지
+- disable : 위 컴포넌트엔 없음
+- gitSlope : 바깥 어디까지 탭 누르는 것을 감지할지
+
+5. 여기서는 TouchableOpacity를 사용할 예정이다.
+
+### 3.2강

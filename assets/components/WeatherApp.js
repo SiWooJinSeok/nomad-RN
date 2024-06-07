@@ -1,4 +1,3 @@
-import { StatusBar } from "expo-status-bar";
 import * as Location from "expo-location";
 import { useEffect, useState } from "react";
 import {
@@ -120,8 +119,6 @@ export default function WeatherApp() {
           ))
         )}
       </ScrollView>
-
-      <StatusBar style="light" />
     </>
   );
 }
