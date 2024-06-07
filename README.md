@@ -449,3 +449,28 @@ const newTodo = Object.assign({}, toDos, {
 - 첫번 째 {} : 기존 객체를 변경하지 않게 함.
 - 두번 째 toDos : 기존 객체
 - 마지막 `{[Date.now()]: { text, work: working },}` : 추가 할 내용
+
+### 3.4강
+
+1. 3.3강 내용 수정하기
+
+```
+const newTodo = { ...toDos, [Date.now()]: { text, work: working } };
+
+```
+
+2. 페인팅하기
+
+```
+<ScrollView>
+  {Object.keys(toDos).map((key) => (
+    <View style={styles.toDo} key={key}>
+      <Text style={styles.toDoText}>{toDos[key].text}</Text>
+    </View>
+  ))}
+</ScrollView>
+
+```
+
+- Object.keys로 키값으로 배열만들기
+- map으로 페인팅하기
