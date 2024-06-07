@@ -408,3 +408,30 @@ import { Pressable } from "react-native";
 5. 여기서는 TouchableOpacity를 사용할 예정이다.
 
 ### 3.2강
+
+1. TextInput 사용하기
+
+- 사용하기
+
+```
+import { TextInput } from "react-native";
+
+// ...
+
+<TextInput />
+
+```
+
+- onChangeText : 입력받은 Text를 받을 수 있음
+- keyboardType : 키보드 타입(핸드폰 키보드 타입)
+- returnKeyType : 완료 버튼의 타입을 정할 수 있음(정해짐)
+- returnKeyLabel : 완료 버튼의 이름을 정할 수 있음(only android 만 가능)
+  - 내폰에선 안됨.
+- secureTextEntry : 비밀번호처럼 가려줌
+- multiline : 한 줄 이상 작성 가능
+- placeholderTextColor : placeholder의 색상 변경
+- autoCorrect : 자동완성 기능
+- autoCapitalize : 자동 대문자 기능
+- 등등 다양한 옵션이 있음.
+
+### 3.3 강

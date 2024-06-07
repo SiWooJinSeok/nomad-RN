@@ -1,11 +1,19 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  TextInput,
+} from "react-native";
 import { theme } from "../color";
 import { useState } from "react";
 
 export default function WorkHardTravelHardApp() {
   const [working, setWorking] = useState(true);
+  const [text, setText] = useState("");
   const travel = () => setWorking(false);
   const work = () => setWorking(true);
+  const onChangeText = (payload) => setText(payload);
 
   return (
     <View style={styles.container}>
@@ -31,6 +39,14 @@ export default function WorkHardTravelHardApp() {
           </Text>
         </TouchableOpacity>
       </View>
+      <View>
+        <TextInput
+          value={text}
+          onChangeText={onChangeText}
+          placeholder={working ? "add Todo" : "add Travel"}
+          style={styles.input}
+        />
+      </View>
     </View>
   );
 }
@@ -49,5 +65,13 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 38,
     fontWeight: "bold",
+  },
+  input: {
+    backgroundColor: "white",
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    borderRadius: 30,
+    marginTop: 20,
+    fontSize: 18,
   },
 });
