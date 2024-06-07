@@ -432,6 +432,20 @@ import { TextInput } from "react-native";
 - placeholderTextColor : placeholder의 색상 변경
 - autoCorrect : 자동완성 기능
 - autoCapitalize : 자동 대문자 기능
+- onSubmitEditing : submit 이벤트
 - 등등 다양한 옵션이 있음.
 
-### 3.3 강
+### 3.3강
+
+1. Object.assign 사용하기
+
+```
+const newTodo = Object.assign({}, toDos, {
+      [Date.now()]: { text, work: working },
+    });
+
+```
+
+- 첫번 째 {} : 기존 객체를 변경하지 않게 함.
+- 두번 째 toDos : 기존 객체
+- 마지막 `{[Date.now()]: { text, work: working },}` : 추가 할 내용
