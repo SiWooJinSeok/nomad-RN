@@ -7,7 +7,10 @@ import {
   ScrollView,
 } from "react-native";
 import { theme } from "../color";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+const STORGE_KEY = "@toDos";
 
 export default function WorkHardTravelHardApp() {
   const [working, setWorking] = useState(true);
@@ -16,17 +19,31 @@ export default function WorkHardTravelHardApp() {
   const travel = () => setWorking(false);
   const work = () => setWorking(true);
   const onChangeText = (payload) => setText(payload);
+
+  const loadTodos = async (todos) => {
+    const s = await AsyncStorage.getItem(STORGE_KEY);
+    if (s) {
+      setTodos(JSON.parse(s));
+    }
+  };
+
+  useEffect(() => {
+    loadTodos();
+  }, []);
+
+  const saveTodos = async (todos) => {
+    AsyncStorage.setItem(STORGE_KEY, JSON.stringify(todos));
+  };
+
   const addTodo = () => {
     if (text === "") {
       return;
     }
 
     const newTodo = { ...toDos, [Date.now()]: { text, work: working } };
-
     setTodos(newTodo);
-
+    saveTodos(newTodo);
     setText("");
-    console.log(newTodo);
   };
 
   return (
@@ -64,11 +81,13 @@ export default function WorkHardTravelHardApp() {
         />
       </View>
       <ScrollView>
-        {Object.keys(toDos).map((key) => (
-          <View style={styles.toDo} key={key}>
-            <Text style={styles.toDoText}>{toDos[key].text}</Text>
-          </View>
-        ))}
+        {Object.keys(toDos).map((key) =>
+          toDos[key].work === working ? (
+            <View style={styles.toDo} key={key}>
+              <Text style={styles.toDoText}>{toDos[key].text}</Text>
+            </View>
+          ) : null
+        )}
       </ScrollView>
     </View>
   );

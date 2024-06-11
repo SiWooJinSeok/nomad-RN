@@ -474,3 +474,40 @@ const newTodo = { ...toDos, [Date.now()]: { text, work: working } };
 
 - Object.keys로 키값으로 배열만들기
 - map으로 페인팅하기
+
+## 5일 차
+
+### 3.5강
+
+1. AsyncStorage 설치하기
+
+```
+npx expo install @react-native-async-storage/async-storage
+```
+
+2. 임포트 하기
+
+```
+import AsyncStorage from "@react-native-async-storage/async-storage";
+```
+
+3. 저장하기
+
+```
+AsyncStorage.setItem(STORGE_KEY, JSON.stringify(todos));
+```
+
+- STORGE_KEY : 저장할 키 값 ,string 값
+- JSON.stringify(todos) : 오브젝트를 string으로 수정해서 저장
+
+4. 불러오기
+
+```
+const s = await AsyncStorage.getItem(STORGE_KEY);
+
+if (s) {
+      setTodos(JSON.parse(s));
+    }
+```
+
+### 3.6강
