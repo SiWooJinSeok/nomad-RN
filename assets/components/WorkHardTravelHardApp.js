@@ -10,20 +10,36 @@ import {
 import { theme } from "../color";
 import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Fontisto } from "@expo/vector-icons";
+import { Fontisto, Feather } from "@expo/vector-icons";
 
 const STORGE_KEY = "@toDos";
+const WORKING = "@working";
 
 export default function WorkHardTravelHardApp() {
   const [working, setWorking] = useState(true);
   const [text, setText] = useState("");
   const [toDos, setTodos] = useState({});
-  const travel = () => setWorking(false);
-  const work = () => setWorking(true);
-  const onChangeText = (payload) => setText(payload);
+  const [editKey, setEditKey] = useState(null);
+  const [editText, setEditText] = useState("");
 
-  const loadTodos = async (todos) => {
+  const toggleWorking = () => {
+    const worked = !working;
+    setWorking(!working);
+    AsyncStorage.setItem(WORKING, JSON.stringify(worked));
+  };
+
+  const onChangeText = (payload) => setText(payload);
+  const onChangeEditText = (payload) => setEditText(payload);
+
+  const loadTodos = async () => {
+    const work = await AsyncStorage.getItem(WORKING);
+
+    if (work) {
+      setWorking(JSON.parse(work));
+    }
+
     const s = await AsyncStorage.getItem(STORGE_KEY);
+
     if (s) {
       setTodos(JSON.parse(s));
     }
@@ -42,10 +58,20 @@ export default function WorkHardTravelHardApp() {
       return;
     }
 
-    const newTodo = { ...toDos, [Date.now()]: { text, work: working } };
+    const newTodo = {
+      ...toDos,
+      [Date.now()]: { text, work: working, confirm: false },
+    };
     setTodos(newTodo);
     await saveTodos(newTodo);
     setText("");
+  };
+
+  const confirmToDo = (key) => {
+    const newTodo = { ...toDos };
+    newTodo[key].confirm = !newTodo[key].confirm;
+    setTodos(newTodo);
+    saveTodos(newTodo);
   };
 
   const deleteToDo = (key) => {
@@ -63,10 +89,23 @@ export default function WorkHardTravelHardApp() {
     ]);
   };
 
+  const changeEditKey = (key) => {
+    setEditKey(key);
+    setEditText(toDos[key].text);
+  };
+
+  const EditToDo = () => {
+    const newTodo = { ...toDos };
+    newTodo[editKey].text = editText;
+    setTodos(newTodo);
+    saveTodos(newTodo);
+    setEditKey(null);
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={work}>
+        <TouchableOpacity onPress={toggleWorking}>
           <Text
             style={{
               ...styles.buttonText,
@@ -76,7 +115,7 @@ export default function WorkHardTravelHardApp() {
             work
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={travel}>
+        <TouchableOpacity onPress={toggleWorking}>
           <Text
             style={{
               ...styles.buttonText,
@@ -100,16 +139,48 @@ export default function WorkHardTravelHardApp() {
       <ScrollView>
         {Object.keys(toDos).map((key) =>
           toDos[key].work === working ? (
-            <View style={styles.toDo} key={key}>
-              <Text style={styles.toDoText}>{toDos[key].text}</Text>
-              <TouchableOpacity
-                onPress={() => {
-                  deleteToDo(key);
-                }}
-              >
-                <Fontisto name="trash" size={18} color={theme.gray} />
-              </TouchableOpacity>
-            </View>
+            <TouchableOpacity key={key} onPress={() => confirmToDo(key)}>
+              <View style={styles.toDo}>
+                {editKey !== key ? (
+                  <Text
+                    style={{
+                      ...styles.toDoText,
+                      textDecorationLine: toDos[key].confirm
+                        ? "line-through"
+                        : "none",
+                    }}
+                  >
+                    {toDos[key].text}
+                  </Text>
+                ) : (
+                  <TextInput
+                    onSubmitEditing={EditToDo}
+                    returnKeyType="done"
+                    value={editText}
+                    onChangeText={onChangeEditText}
+                    placeholder={working ? "add Todo" : "add Travel"}
+                    style={styles.editInput}
+                  />
+                )}
+
+                <View style={styles.buttonView}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      changeEditKey(key);
+                    }}
+                  >
+                    <Feather name="edit" size={18} color={theme.gray} />
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => {
+                      deleteToDo(key);
+                    }}
+                  >
+                    <Fontisto name="trash" size={18} color={theme.gray} />
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </TouchableOpacity>
           ) : null
         )}
       </ScrollView>
@@ -154,5 +225,19 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 16,
     fontWeight: "500",
+  },
+  buttonView: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+    marginLeft: 20,
+  },
+  editInput: {
+    flex: 2,
+    backgroundColor: "white",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 30,
+    fontSize: 16,
   },
 });

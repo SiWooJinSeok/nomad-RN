@@ -576,3 +576,108 @@ Alert.prompt("title");
     ]);
   };
 ```
+
+### 3.8강 Code Challenge
+
+1. 앱 재실행시, 마지막 상태의 Work 또는 Travel 기억하기
+
+```
+const toggleWorking = () => {
+    const worked = !working;
+    setWorking(!working);
+    AsyncStorage.setItem(WORKING, JSON.stringify(worked));
+  };
+
+const loadTodos = async () => {
+  const work = await AsyncStorage.getItem(WORKING);
+
+  if (work) {
+    setWorking(JSON.parse(work));
+  }
+
+  const s = await AsyncStorage.getItem(STORGE_KEY);
+
+  if (s) {
+    setTodos(JSON.parse(s));
+  }
+};
+```
+
+2. Todo에 완료 기능 추가하기
+
+```
+const confirmToDo = (key) => {
+    const newTodo = { ...toDos };
+    newTodo[key].confirm = !newTodo[key].confirm;
+    setTodos(newTodo);
+    saveTodos(newTodo);
+  };
+
+// ...
+
+<TouchableOpacity key={key} onPress={() => confirmToDo(key)}>
+  <View style={styles.toDo}>
+    <Text
+      style={{
+        ...styles.toDoText,
+        textDecorationLine: toDos[key].confirm
+        ? "line-through"
+        : "none",
+    }}>
+      {toDos[key].text}
+    </Text>
+
+// ...
+
+</TouchableOpacity>
+
+```
+
+3. Todo에 수정 기능 추가하기
+
+```
+const [editKey, setEditKey] = useState(null);
+const [editText, setEditText] = useState("");
+
+const onChangeEditText = (payload) => setEditText(payload);
+
+//...
+
+const changeEditKey = (key) => {
+  setEditKey(key);
+  setEditText(toDos[key].text);
+};
+
+const EditToDo = () => {
+  const newTodo = { ...toDos };
+  newTodo[editKey].text = editText;
+  setTodos(newTodo);
+  saveTodos(newTodo);
+  setEditKey(null);
+};
+
+// ...
+
+{editKey !== key ? (
+  <Text
+  style={{
+    ...styles.toDoText,
+    textDecorationLine: toDos[key].confirm
+    ? "line-through"
+    : "none",
+    }}
+  >
+    {toDos[key].text}
+  </Text>
+  ) : (
+  <TextInput
+  onSubmitEditing={EditToDo}
+  returnKeyType="done"
+  value={editText}
+  onChangeText={onChangeEditText}
+  placeholder={working ? "add Todo" : "add Travel"}
+  style={styles.editInput}
+  />
+)}
+
+```
