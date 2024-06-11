@@ -5,10 +5,12 @@ import {
   TouchableOpacity,
   TextInput,
   ScrollView,
+  Alert,
 } from "react-native";
 import { theme } from "../color";
 import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Fontisto } from "@expo/vector-icons";
 
 const STORGE_KEY = "@toDos";
 
@@ -35,15 +37,30 @@ export default function WorkHardTravelHardApp() {
     AsyncStorage.setItem(STORGE_KEY, JSON.stringify(todos));
   };
 
-  const addTodo = () => {
+  const addTodo = async () => {
     if (text === "") {
       return;
     }
 
     const newTodo = { ...toDos, [Date.now()]: { text, work: working } };
     setTodos(newTodo);
-    saveTodos(newTodo);
+    await saveTodos(newTodo);
     setText("");
+  };
+
+  const deleteToDo = (key) => {
+    Alert.alert("삭제하기", "정말 삭제 하시겠습니까?", [
+      { text: "취소" },
+      {
+        text: "삭제",
+        onPress: () => {
+          const newTodo = { ...toDos };
+          delete newTodo[key];
+          setTodos(newTodo);
+          saveTodos(newTodo);
+        },
+      },
+    ]);
   };
 
   return (
@@ -85,6 +102,13 @@ export default function WorkHardTravelHardApp() {
           toDos[key].work === working ? (
             <View style={styles.toDo} key={key}>
               <Text style={styles.toDoText}>{toDos[key].text}</Text>
+              <TouchableOpacity
+                onPress={() => {
+                  deleteToDo(key);
+                }}
+              >
+                <Fontisto name="trash" size={18} color={theme.gray} />
+              </TouchableOpacity>
             </View>
           ) : null
         )}
@@ -122,6 +146,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 20,
     borderRadius: 15,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   toDoText: {
     color: "white",

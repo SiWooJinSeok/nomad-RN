@@ -511,3 +511,68 @@ if (s) {
 ```
 
 ### 3.6강
+
+1. 삭제 기능 만들기
+
+```
+const deleteToDo = async (key) => {
+    const newTodo = { ...toDos };
+    delete newTodo[key];
+    setTodos(newTodo);
+    await saveTodos(newTodo);
+  };
+```
+
+- 새로운 객체를 만들어서 키값에 해당하는 todo만 제거
+- 그 후 저장
+
+2. Alert.alert 사용하기
+
+```
+Alert.alert("title" , [ { text:"Cancel" } , { text: "OK" , onPress : () => {} }]);
+
+/**static alert (
+  title: string,
+  message?: string,
+  buttons?: AlertButton[],
+  options?: AlertOptions,
+*/
+);
+```
+
+- ios에서만 사용 가능한 AlertButtonStyle이 있음.
+
+3. Alert.prompt 사용하기 (ios에서만 동작)
+
+```
+Alert.prompt("title");
+
+/** static prompt: (
+  title: string,
+  message?: string,
+  callbackOrButtons?: ((text: string) => void) | AlertButton[],
+  type?: AlertType,
+  defaultValue?: string,
+  keyboardType?: string,
+);*/
+
+```
+
+4. 삭제 기능 수정하기
+
+```
+ const deleteToDo = (key) => {
+    Alert.alert("삭제하기", "정말 삭제 하시겠습니까?", [
+      { text: "취소" },
+      {
+        text: "삭제",
+        onPress: () => {
+          const newTodo = { ...toDos };
+          delete newTodo[key];
+          setTodos(newTodo);
+          saveTodos(newTodo);
+        },
+      },
+    ]);
+  };
+```
