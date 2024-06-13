@@ -823,3 +823,40 @@ npx expo-doctor@latest
 2. 원인 발견 : gpt로 만든 아이콘의 확장자가 .webp의 문제
 
 - 해결 방법 : https://www.online-convert.com/ 사이트로 들어가 png로 수정
+
+### 4.3강
+
+1. dev 사이트로 가서 빌드 된 거 다운하기
+
+2. 기본이 .aab임
+
+3. GPT에게 물어보니 eas.json에 아래처럼 추가 (.apk로 수정)
+
+```
+{
+  "build": {
+    "production": {
+      "android": {
+        "buildType": "apk"
+      }
+    }
+  }
+}
+```
+
+```
+eas build -p android --profile production
+```
+
+이렇게 해결 가능하다고 알려줌
+
+4. expo의 단점
+
+- infrastructure에 접근할 수 없다.
+- expo에 내장되어 있는 불필요한 라이브러리들을 지울 수 없어 용량이 커질 수 밖에 없다.
+- expo 설정 자체에 한계가 있다.
+
+5. eject scripts로 expo에서 꺼내주는 것도 있다.
+
+- 추천하진 않음
+- 대신 create react native app을 사용한다.
