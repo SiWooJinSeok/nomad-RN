@@ -797,3 +797,29 @@ if (Platform.OS === "web") {
 ```
 
 - Platform.OS로 OS 확인 가능
+
+### 4.2강
+
+1. 안드로이드 빌드하기 (시간 좀 걸림)
+
+```
+eas build -p android
+```
+
+2. ios, web은 생략
+
+- ios 폰이 없어 아이디가 없음.
+
+- web 많이 바뀜.
+
+#### 빌드 오류 발생!
+
+1. expo 진단하기
+
+```
+npx expo-doctor@latest
+```
+
+2. 원인 발견 : gpt로 만든 아이콘의 확장자가 .webp의 문제
+
+- 해결 방법 : https://www.online-convert.com/ 사이트로 들어가 png로 수정
