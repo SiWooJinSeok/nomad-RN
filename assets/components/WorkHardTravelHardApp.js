@@ -6,6 +6,7 @@ import {
   TextInput,
   ScrollView,
   Alert,
+  Platform,
 } from "react-native";
 import { theme } from "../color";
 import { useEffect, useState } from "react";
@@ -75,6 +76,19 @@ export default function WorkHardTravelHardApp() {
   };
 
   const deleteToDo = (key) => {
+    if (Platform.OS === "web") {
+      const ok = confirm("정말 삭제 하시겠습니까?");
+
+      if (ok) {
+        const newTodo = { ...toDos };
+        delete newTodo[key];
+        setTodos(newTodo);
+        saveTodos(newTodo);
+      }
+
+      return;
+    }
+
     Alert.alert("삭제하기", "정말 삭제 하시겠습니까?", [
       { text: "취소" },
       {

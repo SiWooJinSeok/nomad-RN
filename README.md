@@ -772,3 +772,28 @@ One or more checks failed, indicating possible issues with the project.
 ```
 npx expo install --check
 ```
+
+### 4.1강
+
+1. app.json에 앱정보, 아이콘 등이 포함된다.
+
+- https://docs.expo.dev/versions/latest/config/app/#properties 여기서 다양한 옵션들을 찾을 수 있음.
+
+2. 웹에서는 Alert 사용불가 아래처럼 추가
+
+```
+if (Platform.OS === "web") {
+      const ok = confirm("정말 삭제 하시겠습니까?");
+
+      if (ok) {
+        const newTodo = { ...toDos };
+        delete newTodo[key];
+        setTodos(newTodo);
+        saveTodos(newTodo);
+      }
+
+      return;
+    }
+```
+
+- Platform.OS로 OS 확인 가능
