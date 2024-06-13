@@ -681,3 +681,94 @@ const EditToDo = () => {
 )}
 
 ```
+
+## 6일 차
+
+### 4.0강
+
+1. eas-cli 설치
+
+- 더이상 publish를 사용할 수 없음.
+
+```
+npm install -g eas-cli
+```
+
+2. 빌드 해주기
+
+```
+eas build
+```
+
+3. 본인 expo dev 가서 빌드 상황 확인하기
+
+- https://expo.dev/
+
+- 8분 25초 정도 걸림
+
+4. eas update 하기(publish)
+
+```
+eas update
+```
+
+- branch 설정
+- 업데이트 메세지 설정
+
+5. expo dev에서 updates 메뉴 클릭
+
+- 프로젝트 확인 가능
+
+6. 업데이트 프로젝트 클릭 후 우측 상단에 Preview 클릭
+
+- 밑에 Advanced 있음.
+
+7. expo go로 QR 실행 성공
+
+#### 빌드 중 경고문 발생
+
+<img src='./img/ddf.PNG' alt='오류 이미지'>
+
+1. 실행
+
+```
+npx expo-doctor@latest
+```
+
+2. 아래 처럼 출력됨
+
+```
+Need to install the following packages:
+expo-doctor@1.6.1
+Ok to proceed? (y) y
+WARNING: We recommend using PowerShell or Bash via WSL 2 for development with Expo CLI on Windows. You may encounter issues using cmd.exe.
+
+✔ Check Expo config for common issues
+✔ Check package.json for common issues
+✔ Check native tooling versions
+✔ Check dependencies for packages that should not be installed directly
+✔ Check for common project setup issues
+✔ Check npm/ yarn versions
+✔ Check for issues with metro config
+✔ Check Expo config (app.json/ app.config.js) schema
+✔ Check for legacy global CLI installed locally
+✔ Check that native modules do not use incompatible support packages
+✖ Check that packages match versions required by installed Expo SDK
+✔ Check that native modules use compatible support package versions for installed Expo SDK
+
+Detailed check results:
+
+The following packages should be updated for best compatibility with the installed expo version:
+  react-native@0.74.1 - expected version: 0.74.2
+Your project may not work correctly until you install the expected versions of the packages.
+Found outdated dependencies
+Advice: Use 'npx expo install --check' to review and upgrade your dependencies.
+
+One or more checks failed, indicating possible issues with the project.
+```
+
+3. 조언대로 --check 설치
+
+```
+npx expo install --check
+```
